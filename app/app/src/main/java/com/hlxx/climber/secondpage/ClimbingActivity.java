@@ -320,7 +320,7 @@ public class ClimbingActivity extends AppCompatActivity {
                     msg.what = 2;  //消息(一个整型值)
                     if (mHandler != null) {
                         mHandler.sendMessage(msg);// 每隔1秒发送一个msg给mHandler
-                        Thread.sleep(1000);
+                        Thread.sleep(100);
                     }
                 } catch (InterruptedException e) {
                     threadState = false;

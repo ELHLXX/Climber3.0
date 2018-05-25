@@ -3,12 +3,15 @@ package com.hlxx.climber.secondpage.settings;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import com.hlxx.climber.R;
 import com.hlxx.climber.secondpage.ClimbingActivity;
+import com.hlxx.climber.zerothpage.SplashActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -46,7 +49,7 @@ public class VibrateSetter {
             mNotificationChannel_NoVibrate.setDescription("Exit");
             mNotificationChannel_NoVibrate.enableLights(true);
             mNotificationChannel_NoVibrate.enableVibration(false);
-            mNotificationChannel.setVibrationPattern(new long[]{} );
+            mNotificationChannel.setVibrationPattern(new long[]{});
             manager.createNotificationChannel(mNotificationChannel_NoVibrate);
         }
 
@@ -66,6 +69,10 @@ public class VibrateSetter {
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setAutoCancel(true);
         builder.setLargeIcon(BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher_round));
+        Intent appIntent = new Intent(activity.getApplicationContext(), SplashActivity.class);
+        appIntent.setAction(Intent.ACTION_MAIN);
+        appIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         if (finish) {
             builder.setTicker("恭喜");
             builder.setContentTitle("成功");
@@ -75,6 +82,8 @@ public class VibrateSetter {
             builder.setContentTitle("失败");
             builder.setContentText("切换过多，下次加油！");
         }
+        PendingIntent contentIntent = PendingIntent.getActivity(activity, 0, appIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         manager.notify(5, notification);

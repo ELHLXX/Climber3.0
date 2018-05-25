@@ -7,7 +7,7 @@ public class Record implements Serializable {
     static final long serialVersionUID = 1L;
 
     public void setLevel() {
-        this.level = 100 - switchTimes * 25;
+        this.level = 100 - switchTimes * 25 < 0 ? 0 : 100 - switchTimes * 25;
     }
 
     private int timeSetted;//时间

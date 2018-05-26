@@ -6,7 +6,7 @@ import static com.hlxx.climber.secondpage.settings.TimePut.stringToInts;
 
 public class TimeChange {
 
-    public static void changeTime(int[] originalTime) throws TooManyTimesException {
+    public static void changeTime(int[] originalTime) {
         originalTime = switches(originalTime);
         TimeGet.setTimeSecond(originalTime);
     }
@@ -14,10 +14,14 @@ public class TimeChange {
     public static int changeTime(String sOriginalTime) throws TooManyTimesException {
         int[] iOriginalTime = stringToInts(sOriginalTime);
         changeTime(iOriginalTime);
-        return IsForeground.getTimes();
+        if (IsForeground.getTimes() != 5) {
+            return IsForeground.getTimes();
+        } else {
+            throw new TooManyTimesException();
+        }
     }
 
-    private static int[] switches(int[] time) throws TooManyTimesException {
+    private static int[] switches(int[] time) {
         int seconds = intsToSecond(time);
         switch (IsForeground.getTimes()) {
             case 1:
@@ -32,8 +36,6 @@ public class TimeChange {
             case 4:
                 seconds = (int) (seconds * 1.75);
                 break;
-            default:
-                throw new TooManyTimesException();
         }
         time = stringToInts(intsToString(seconds * 1000));
         return time;
